@@ -8,6 +8,9 @@
 * **Developer Friendly:** Export palettes directly to CSS variables or toggle between HEX, RGB, and HSL formats.
 * **Privacy Focused:** No images are stored on servers; all processing is transient.
 
+## Live Demo
+Check out the live application here: https://eahmadov15377.github.io/ChromaCount-Team4/
+
 ## 🛠️ Installation & Setup
 1.  **Clone the repository**
     ```bash
