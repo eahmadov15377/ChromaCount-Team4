@@ -1,6 +1,12 @@
 import { ColorFormat, ColorBlindnessMode } from '../types';
 
-export const hexToRgbValues = (hex) => {
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+export const hexToRgbValues = (hex: string): RGB | null => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
     r: parseInt(result[1], 16),
@@ -9,16 +15,16 @@ export const hexToRgbValues = (hex) => {
   } : null;
 };
 
-const componentToHex = (c) => {
+const componentToHex = (c: number): string => {
   const hex = Math.max(0, Math.min(255, Math.round(c))).toString(16);
   return hex.length === 1 ? "0" + hex : hex;
 };
 
-const rgbToHex = (r, g, b) => {
+const rgbToHex = (r: number, g: number, b: number): string => {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 };
 
-export const getLuminance = (r, g, b) => {
+export const getLuminance = (r: number, g: number, b: number): number => {
   const a = [r, g, b].map((v) => {
     v /= 255;
     return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
@@ -26,13 +32,13 @@ export const getLuminance = (r, g, b) => {
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 };
 
-export const getHexLuminance = (hex) => {
+export const getHexLuminance = (hex: string): number => {
   const rgb = hexToRgbValues(hex);
   if (!rgb) return 0;
   return getLuminance(rgb.r, rgb.g, rgb.b);
 };
 
-export const getContrastRatio = (hex1, hex2) => {
+export const getContrastRatio = (hex1: string, hex2: string): number => {
   const rgb1 = hexToRgbValues(hex1);
   const rgb2 = hexToRgbValues(hex2);
   if (!rgb1 || !rgb2) return 0;
@@ -46,7 +52,7 @@ export const getContrastRatio = (hex1, hex2) => {
   return (lighter + 0.05) / (darker + 0.05);
 };
 
-export const hexToHslString = (hex) => {
+export const hexToHslString = (hex: string): string => {
   const rgb = hexToRgbValues(hex);
   if (!rgb) return '';
   let { r, g, b } = rgb;
@@ -68,7 +74,7 @@ export const hexToHslString = (hex) => {
   return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
 };
 
-export const getHue = (hex) => {
+export const getHue = (hex: string): number => {
   const rgb = hexToRgbValues(hex);
   if (!rgb) return 0;
   let { r, g, b } = rgb;
@@ -86,13 +92,13 @@ export const getHue = (hex) => {
   return h * 60;
 }
 
-export const hexToRgbString = (hex) => {
+export const hexToRgbString = (hex: string): string => {
   const rgb = hexToRgbValues(hex);
   if (!rgb) return '';
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 };
 
-export const formatColor = (hex, format) => {
+export const formatColor = (hex: string, format: ColorFormat): string => {
   switch (format) {
     case 'HEX': return hex.toUpperCase();
     case 'RGB': return hexToRgbString(hex);
@@ -101,13 +107,13 @@ export const formatColor = (hex, format) => {
   }
 };
 
-export const determineTextColor = (backgroundColor) => {
+export const determineTextColor = (backgroundColor: string): string => {
   const ratioWhite = getContrastRatio(backgroundColor, '#FFFFFF');
   const ratioBlack = getContrastRatio(backgroundColor, '#000000');
   return ratioWhite > ratioBlack ? '#FFFFFF' : '#000000';
 };
 
-export const generateCssVariables = (colors) => {
+export const generateCssVariables = (colors: string[]): string => {
   let css = ':root {\n';
   colors.forEach((color, index) => {
     css += `  --color-palette-${index + 1}: ${color};\n`;
@@ -116,7 +122,7 @@ export const generateCssVariables = (colors) => {
   return css;
 };
 
-export const generateScssVariables = (colors) => {
+export const generateScssVariables = (colors: string[]): string => {
   let scss = '';
   colors.forEach((color, index) => {
     scss += `$color-palette-${index + 1}: ${color};\n`;
@@ -124,7 +130,7 @@ export const generateScssVariables = (colors) => {
   return scss;
 };
 
-export const generateTailwindConfig = (colors) => {
+export const generateTailwindConfig = (colors: string[]): string => {
   const config = {
     theme: {
       extend: {
@@ -140,16 +146,16 @@ export const generateTailwindConfig = (colors) => {
   return JSON.stringify(config, null, 2);
 };
 
-export const generateJson = (colors) => {
+export const generateJson = (colors: string[]): string => {
   return JSON.stringify({ colors }, null, 2);
 };
 
-export const simulateColorBlindness = (hex, mode) => {
+export const simulateColorBlindness = (hex: string, mode: string): string => {
   const rgb = hexToRgbValues(hex);
   if (!rgb || mode === 'Normal') return hex;
   const { r, g, b } = rgb;
   
-  const transform = (matrix) => {
+  const transform = (matrix: number[]): string => {
     const R = r * matrix[0] + g * matrix[1] + b * matrix[2];
     const G = r * matrix[3] + g * matrix[4] + b * matrix[5];
     const B = r * matrix[6] + g * matrix[7] + b * matrix[8];

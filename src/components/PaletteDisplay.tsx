@@ -20,13 +20,14 @@ const PaletteDisplay: React.FC<PaletteDisplayProps> = ({ palette, colorFormat, o
     setSortMethod('ORIGINAL');
   }, [palette]);
 
-  const handleCopy = (color, index) => {
+  // FIX: index is just a number, not a SetStateAction
+  const handleCopy = (color: string, index: number) => {
     navigator.clipboard.writeText(formatColor(color, colorFormat));
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const handleExport = (format) => {
+  const handleExport = (format: string) => {
     let content = '', filename = 'palette', type = 'text/plain';
     if (format === 'CSS') { content = generateCssVariables(sortedColors); filename = 'chromacount.css'; type = 'text/css'; }
     else if (format === 'SCSS') { content = generateScssVariables(sortedColors); filename = '_palette.scss'; type = 'text/x-scss'; }
@@ -42,7 +43,8 @@ const PaletteDisplay: React.FC<PaletteDisplayProps> = ({ palette, colorFormat, o
     setShowExportMenu(false);
   };
 
-  const handleSort = (method) => {
+  // FIX: method is just a string, not a SetStateAction
+  const handleSort = (method: string) => {
     setSortMethod(method);
     if (method === 'ORIGINAL') setSortedColors(palette.colors);
     else if (method === 'LUMINANCE') setSortedColors([...palette.colors].sort((a, b) => getHexLuminance(b) - getHexLuminance(a)));
@@ -69,7 +71,7 @@ const PaletteDisplay: React.FC<PaletteDisplayProps> = ({ palette, colorFormat, o
           </div>
           <div className="flex bg-slate-100 rounded-lg p-1 h-10">
             {['HEX', 'RGB', 'HSL'].map((fmt) => (
-              <button key={fmt} onClick={() => onFormatChange(fmt)} className={`px-3 rounded-md text-xs font-bold transition-all ${colorFormat === fmt ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>{fmt}</button>
+              <button key={fmt} onClick={() => onFormatChange(fmt as ColorFormat)} className={`px-3 rounded-md text-xs font-bold transition-all ${colorFormat === fmt ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>{fmt}</button>
             ))}
           </div>
           <div className="relative">
