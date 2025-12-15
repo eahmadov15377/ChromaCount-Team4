@@ -37,7 +37,7 @@ export const getHexLuminance = (hex: string): number => {
   if (!rgb) return 0;
   return getLuminance(rgb.r, rgb.g, rgb.b);
 };
-
+//Khayyam thanks for noting error in getContrastRatio, good now
 export const getContrastRatio = (hex1: string, hex2: string): number => {
   const rgb1 = hexToRgbValues(hex1);
   const rgb2 = hexToRgbValues(hex2);
