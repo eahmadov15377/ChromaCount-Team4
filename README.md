@@ -34,5 +34,17 @@ Check out the live application here: https://eahmadov15377.github.io/ChromaCount
 * **Fikrat Rustamli** - UI/UX Designer (Responsive Design & Styling)
 * **Khayyam Najafli** - QA & Logic (Accessibility Standards & Testing)
 
+## ⚠️ Known Issues: Google Gemini API Quotas
+
+**Note to Graders/Instructors:**
+This application relies on the Google Gemini AI API. During development, we encountered specific constraints with the Google AI Free Tier:
+
+1.  **Rate Limiting (429 Errors):** The API may return `Quota exceeded ... limit: 0`. This occurs because Google's experimental models (like Gemini 2.0/2.5) often have **zero free tier allowance**, and the "Stable" aliases (like `gemini-pro-latest`) sometimes redirect to these paid-only models automatically.
+2.  **Service Overload (503 Errors):** The API occasionally returns `503 Service Unavailable` due to high traffic on the free tier models.
+
+**If the analysis fails during a demo:**
+*   Please wait 10-20 seconds and click "Analyze" again.
+*   The error handling in the console/network tab will confirm if the issue is an upstream API rejection (429/503).
+
 ## 📄 License
 Project submitted for CSCI 3509: Intro to Software Engineering, Fall 2025.
