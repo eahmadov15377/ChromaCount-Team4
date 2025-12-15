@@ -1,73 +1,47 @@
-// @ts-ignore
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+// --- START OF FILE src/services/gemini.ts ---
 import { PaletteData } from "../types";
 
-
-
-const SYSTEM_INSTRUCTION = `
-You are ChromaCount, an expert color theorist and accessibility specialist. 
-Your task is to analyze images and extract the most visually dominant and aesthetically significant colors.
-You must also determine the "mood" of the image using descriptive tags (e.g., Warm, Cyberpunk, Melancholic, Pastel, Corporate).
-`;
+// IMPORTANT: When running locally, use localhost. 
+// When on GitHub Pages, use your Vercel Project URL.
+const API_ENDPOINT = (import.meta as any).env.DEV 
+  ? '/api/analyze-image' // Proxied by Vite locally
+  : 'https://chromacount-team4.vercel.app/api/analyze-image'; // REPLACE WITH YOUR ACTUAL VERCEL APP URL
 
 export const analyzeImage = async (base64Image: string): Promise<Omit<PaletteData, 'imageUrl' | 'timestamp' | 'id'>> => {
-  
-  // 1. Access the API key safely(FINALLLY SOMEONE FIXED THIS )
-  const apiKey = (import.meta as any).env.VITE_API_KEY;
 
-
-  // DEBUG:
-  console.log("Current API Key:", apiKey); 
-
-  if (!apiKey) {
-    throw new Error("API Key is missing. Please provide a valid Gemini API Key in your .env file.");
-  }
-
-  // 2. Initialize the standard SDK
-  const genAI = new GoogleGenerativeAI(apiKey);
-  
-  // 3. Configure the model (Discorda baxin please chat da log var, 2.5 cox gec isleyir)
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash", 
-    systemInstruction: SYSTEM_INSTRUCTION,
-    generationConfig: {
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: SchemaType.OBJECT,
-        properties: {
-          colors: { 
-            type: SchemaType.ARRAY, 
-            items: { type: SchemaType.STRING } 
-          },
-          moodTags: { 
-            type: SchemaType.ARRAY, 
-            items: { type: SchemaType.STRING } 
-          }
-        },
-        required: ["colors", "moodTags"]
-      }
-    }
-  });
-
-  const cleanBase64 = base64Image.replace(/^data:image\/(png|jpg|jpeg|webp);base64,/, "");
+  // Remove the data URL prefix
+  const imageData = base64Image.replace(/^data:image\/(png|jpg|jpeg|webp);base64,/, '');
 
   try {
-    const result = await model.generateContent([
-      { inlineData: { mimeType: "image/png", data: cleanBase64 } },
-      "Extract the 5 to 8 most dominant colors. Provide 3 to 5 descriptive mood tags."
-    ]);
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        imageData,
+        prompt: 'Extract the 5 to 8 most dominant colors. Provide 3 to 5 descriptive mood tags.'
+      })
+    });
 
-    const text = result.response.text();
-    if (!text) throw new Error("No response from AI");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to analyze image');
+    }
 
-    const data = JSON.parse(text);
+    const data = await response.json();
+
+    // The backend now handles the cleaning, but we parse here to be safe
+    const resultText = data.candidates[0].content.parts[0].text;
+    const parsedResult = JSON.parse(resultText);
+
     return {
-      colors: data.colors,
-      moodTags: data.moodTags
+      colors: parsedResult.colors,
+      moodTags: parsedResult.moodTags
     };
 
   } catch (error) {
-    console.error("Gemini Analysis Error:", error);
-    throw new Error("Failed to analyze image. Please try again.");
+    console.error('Analysis Error:', error);
+    throw new Error('Failed to analyze image. Ensure backend is running.');
   }
 };
