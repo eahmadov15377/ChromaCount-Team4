@@ -23,7 +23,7 @@ export interface AccessibilityResult {
   aaa: boolean;
   aaaLarge: boolean;
 }
-
+// fikrat okay nice , thanks for adding these types
 export enum ViewMode {
   UPLOAD = 'UPLOAD',
   ANALYSIS = 'ANALYSIS'

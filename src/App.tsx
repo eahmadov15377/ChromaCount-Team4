@@ -162,7 +162,7 @@ const App: React.FC = () => {
           <p className="text-slate-400 text-sm">Powered by Google Gemini AI & React.</p>
         </div>
       </footer>
-      
+      //FIXED : Type the palette prop correctly , well done Fikrat
       <HistoryPanel 
         isOpen={isHistoryOpen} 
         onClose={() => setIsHistoryOpen(false)} 
