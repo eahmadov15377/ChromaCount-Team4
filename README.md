@@ -9,7 +9,7 @@
 * **Privacy Focused:** No images are stored on servers; all processing is transient.
 
 ## Live Demo
-Check out the live application here: https://eahmadov15377.github.io/ChromaCount-Team4/
+Check out the live application here: https://chroma-count-team4.vercel.app/
 
 ## 🛠️ Installation & Setup
 1.  **Clone the repository**
