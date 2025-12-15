@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 export default async function handler(req, res) {
   // CORS Configuration: Allow your GitHub Pages domain to access this API
   res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*'); // IN PRODUCTION: Replace '*' with 'https://eahmadov15377.github.io'
+  res.setHeader('Access-Control-Allow-Origin', '*'); 
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
     'Access-Control-Allow-Headers',

@@ -3,9 +3,7 @@ import { PaletteData } from "../types";
 
 // IMPORTANT: When running locally, use localhost. 
 // When on GitHub Pages, use your Vercel Project URL.
-const API_ENDPOINT = (import.meta as any).env.DEV 
-  ? '/api/analyze-image' // Proxied by Vite locally
-  : 'https://chromacount-team4.vercel.app/api/analyze-image'; // REPLACE WITH YOUR ACTUAL VERCEL APP URL
+const API_ENDPOINT = 'https://chroma-count-team4.vercel.app/api/analyze-image'; 
 
 export const analyzeImage = async (base64Image: string): Promise<Omit<PaletteData, 'imageUrl' | 'timestamp' | 'id'>> => {
 
