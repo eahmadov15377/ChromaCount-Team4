@@ -11,6 +11,7 @@ interface HistoryPanelProps {
   refreshTrigger: number;
 }
 
+// well done Fikrat for implementing history panel, reference: Dropzone.tsx for React.FC usage
 const HistoryPanel: React.FC<HistoryPanelProps> = ({ onSelect, currentId, isOpen, onClose, refreshTrigger }) => {
   const [history, setHistory] = React.useState<PaletteData[]>([]);
 

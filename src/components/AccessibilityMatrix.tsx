@@ -3,7 +3,7 @@ import { PaletteData } from '../types';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { determineTextColor } from '../services/utils';
 
-// 1. Define the interface so TS knows 'palette' is allowed
+// 1. Define the interface , 'palette' is allowed
 interface AccessibilityMatrixProps {
   palette: PaletteData;
 }
@@ -19,8 +19,7 @@ const AccessibilityMatrix: React.FC<AccessibilityMatrixProps> = ({ palette }) =>
         <p className="text-slate-500 text-sm mt-1">
           WCAG 2.1 Contrast compliance check against black & white text.
         </p>
-      </div>
-      
+      </div>      
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -34,7 +33,7 @@ const AccessibilityMatrix: React.FC<AccessibilityMatrixProps> = ({ palette }) =>
           <tbody>
             {palette.colors.map((color, index) => {
               const bestText = determineTextColor(color);
-              
+              // 2. Use the 'palette' prop to access colors: Rafig changed access to palette.colors
               return (
                 <tr key={index} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                   <td className="p-4">

@@ -8,7 +8,7 @@ interface ColorBlindnessSimProps { palette: PaletteData; }
 const ColorBlindnessSim: React.FC<ColorBlindnessSimProps> = ({ palette }) => {
   const [mode, setMode] = useState('Normal');
   const modes = ['Normal', 'Protanopia', 'Deuteranopia', 'Tritanopia', 'Achromatopsia'];
-
+// FIX: simulateColorBlindness colors based on the selected mode by dear Rafig
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">

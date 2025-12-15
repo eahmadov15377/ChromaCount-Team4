@@ -6,6 +6,7 @@ interface DropzoneProps {
   isProcessing: boolean;
 }
 
+//Rafig don't forget to validate file type and size: DONE
 const Dropzone: React.FC<DropzoneProps> = ({ onImageSelected, isProcessing }) => {
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);

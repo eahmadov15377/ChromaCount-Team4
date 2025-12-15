@@ -20,13 +20,14 @@ const PaletteDisplay: React.FC<PaletteDisplayProps> = ({ palette, colorFormat, o
     setSortMethod('ORIGINAL');
   }, [palette]);
 
-  // FIX: index is just a number, not a SetStateAction
+  // FIX: index is just a number, not a SetStateAction (i fixed but merge conflict happened )
   const handleCopy = (color: string, index: number) => {
     navigator.clipboard.writeText(formatColor(color, colorFormat));
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
+  // Fikrat are you sure about this method, but it works fine for the al export 
   const handleExport = (format: string) => {
     let content = '', filename = 'palette', type = 'text/plain';
     if (format === 'CSS') { content = generateCssVariables(sortedColors); filename = 'chromacount.css'; type = 'text/css'; }
@@ -43,7 +44,7 @@ const PaletteDisplay: React.FC<PaletteDisplayProps> = ({ palette, colorFormat, o
     setShowExportMenu(false);
   };
 
-  // FIX: method is just a string, not a SetStateAction
+  // FIX: method is just a string, not a SetStateAction (rafig please dont touch this)
   const handleSort = (method: string) => {
     setSortMethod(method);
     if (method === 'ORIGINAL') setSortedColors(palette.colors);
