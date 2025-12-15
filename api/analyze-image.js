@@ -13,8 +13,7 @@ export default async function handler(req, res) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     
     // "gemini-pro-latest" is in your JSON list. It is stable and handles images.
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-latest" });
-
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const fullPrompt = `${prompt} Return ONLY a raw JSON object. Format: {"colors": ["#HEX1", "#HEX2", "#HEX3", "#HEX4", "#HEX5"], "moodTags": ["Tag1", "Tag2", "Tag3"]}`;
     
     const imagePart = { inlineData: { data: imageData, mimeType: "image/jpeg" } };
